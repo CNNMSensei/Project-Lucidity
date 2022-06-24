@@ -11,7 +11,10 @@ public class Player : MonoBehaviour
     public float jumpForce;
     public float fallMultiplier;
 
-    private bool onGround = false;
+    //[HideInInspector]
+    public bool onGround = false;
+    public bool touchingLeft = false;
+    public bool touchingRight = false;
     private Rigidbody2D rb;
 
     // Start is called before the first frame update
@@ -22,16 +25,18 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update(){
         if(Input.GetAxisRaw("Horizontal") != 0){
-            rb.velocity += new Vector2(Input.GetAxisRaw("Horizontal") * acceleration, 0); // accelerate
+            if((Input.GetAxisRaw("Horizontal") > 0 && !touchingRight) || (Input.GetAxisRaw("Horizontal") < 0 && !touchingLeft)){
+                rb.velocity += new Vector2(Input.GetAxisRaw("Horizontal") * acceleration, 0); // accelerate
+            }
             rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y); // caps speed
         }else{
             rb.velocity = new Vector2(rb.velocity.x / friction, rb.velocity.y); // slows down faster
         }
-        if(Input.GetButtonDown("Jump")){ // if touching ground and jump key pressed
+        if(Input.GetButtonDown("Jump") && onGround){ // if touching ground and jump key pressed
             rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse); // jump
         }
         if(rb.velocity.y < 0){
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * fallMultiplier); // makes heavier falling
+            rb.velocity = new Vector2(rb.velocity.x, (rb.velocity.y * fallMultiplier > -15 ? rb.velocity.y * fallMultiplier : -15)); // makes heavier falling
         }
     }
 }
