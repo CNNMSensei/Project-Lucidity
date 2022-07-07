@@ -38,9 +38,6 @@ public class Player : MonoBehaviour
         if(rb.velocity.y < 0){
             rb.velocity = new Vector2(rb.velocity.x, (rb.velocity.y * fallMultiplier > -15 ? rb.velocity.y * fallMultiplier : -15)); // makes heavier falling
         }
-        if (Player.IsTouching(InvertGravity))
-        {
-            rb.GravityScale = -1
-        }
+
     }
 }
