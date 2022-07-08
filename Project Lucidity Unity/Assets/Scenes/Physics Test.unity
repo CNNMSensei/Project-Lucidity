@@ -1184,7 +1184,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.98, y: 0.052}
+  m_Size: {x: 0.94, y: 0.052}
   m_EdgeRadius: 0
 --- !u!114 &314757574
 MonoBehaviour:
@@ -1431,7 +1431,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 2.2569, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
