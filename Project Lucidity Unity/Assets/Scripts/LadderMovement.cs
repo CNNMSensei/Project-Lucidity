@@ -1,20 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LadderMovement : MonoBehaviour
 {
     private float vertical;
-    private float speed = 6f;
+    private float speed = 8f;
     private bool isLadder;
     private bool isClimbing;
+
     [SerializeField] private Rigidbody2D rb;
-   
-    // Update is called once per frame
+
     void Update()
     {
-        vertical = Input.getAxis("Vertical");
-        if (isLadder = true && Mathf.Abs(vertical) > 0f)
+        vertical = Input.GetAxisRaw("Vertical");
+
+        if (isLadder && Mathf.Abs(vertical) > 0f)
         {
             isClimbing = true;
         }
@@ -22,16 +21,17 @@ public class LadderMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(isClimbing)
+        if (isClimbing)
         {
-            rb.GravityScale = 0f;
+            rb.gravityScale = 0f;
             rb.velocity = new Vector2(rb.velocity.x, vertical * speed);
         }
         else
         {
-            rb.GravityScale = 4f;
+            rb.gravityScale = 7.77f;
         }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Ladder"))
@@ -39,6 +39,7 @@ public class LadderMovement : MonoBehaviour
             isLadder = true;
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Ladder"))
