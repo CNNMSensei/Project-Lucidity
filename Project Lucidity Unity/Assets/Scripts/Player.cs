@@ -10,17 +10,20 @@ public class Player : MonoBehaviour
     public float friction;
     public float jumpForce;
     public float fallMultiplier;
-    public int extraJumps = 0;
+    public int extraJumps = 2;
+    public int extraJumpsMax = 2;
 
     //[HideInInspector]
     public bool onGround = false;
     public bool touchingLeft = false;
     public bool touchingRight = false;
     private Rigidbody2D rb;
-    private int jumpsUsed = 0;
+    //private int jumpsUsed = 0;
 
     // Start is called before the first frame update
     void Start(){
+        //extraJumps = 3;
+        //extraJumpsMax = extraJumps;
         rb = gameObject.GetComponent<Rigidbody2D>(); // stores player's rigidbody (physics)
     }
 
@@ -36,15 +39,29 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x / friction, rb.velocity.y); // slows down faster
         }
 
-        //Jumps
+        
         if(onGround){
-            jumpsUsed = 0;
+            extraJumps = extraJumpsMax;
+            if (Input.GetKeyDown(KeyCode.DownArrow)){
+            //slide
+            //change animation
+            //rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.AddForce(new Vector2(jumpForce*2, 0), ForceMode2D.Impulse); // jump
         }
-        if(Input.GetButtonDown("Jump") && (onGround || jumpsUsed < extraJumps)){ // if touching ground and jump key pressed
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse); // jump
-            jumpsUsed++;
         }
+        //Jumps
+        if(Input.GetButtonDown("Jump")){ // if touching ground and jump key pressed
+            if(onGround){
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+                rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse); // jump
+            }else if(extraJumps>0){
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+                rb.AddForce(new Vector2(0, jumpForce/1.5f), ForceMode2D.Impulse); // jump
+                extraJumps--;
+            }
+        }
+        
+
 
         //makes falling "heavier" to simulate more realistic gravity
         if(rb.velocity.y < 0){
